@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+    <p>Share URL: <input type="text" value="http://{{ host }}/{{ lobby.name }}" /></p>
+    <div>Switch to: <form action="/{{ lobby.name }}" method="post" style="display: inline;">{% if participant.ready %}<input type="submit" name="notready" value="Not Ready" />{% else %}<input type="submit" name="ready" value="Ready" />{% endif %}</form></div>
+    <p>Participants:
+      <ul>
+        {% for participant in lobby.participant_set %}
+        <li>{{ participant.user.nickname }} is <span style="color: {% if participant.ready %}green{% else %}red{% endif %};">{% if participant.ready %}ready{% else %}not ready{% endif %}</span></li>
+        {% endfor %}
+        {% for participant in remaining_participants %}
+        <li>??? is <span style="color: red;">not ready</span></li>
+        {% endfor %}
+      </ul>
+    </p>
+    <p>Status: {{ lobby.participants_ready }}/{{ lobby.participants }}</p>
+    <script type="text/javascript" charset="utf-8">
+      function gotMsg(msg) { 
+        if (msg.indexOf("refresh") >= 0) {
+          window.location.reload();
+        }
+        //waitForMsg(); 
+      }
+      function waitForMsg(){ $('body').append('\<script type="text/javascript" src="http://live.readyinrealtime.com/{{ lobby.name }}?callback=gotMsg">\<\/script>'); }
+      $(document).ready(function(){ waitForMsg(); });
+    </script>
+{% endblock %}

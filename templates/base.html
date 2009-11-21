@@ -1,0 +1,16 @@
+<html>
+  <head>
+    <title>Ready in Real-Time</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+  </head>
+  <body>
+    <p>
+    {% if user %}
+    {{ user.nickname }} | <a href="{{ logout_url }}">Logout</a>
+    {% else %}
+    <a href="{{ login_url }}">Login</a>
+    {% endif %}
+    </p>
+    {% block content %}{% endblock %}
+  </body>
+</html>

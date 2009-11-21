@@ -1,0 +1,18 @@
+Homepage
+ -Login
+ -Bookmarklet
+ -"Ready in Real-Time is your lobby for getting everybody ready to go into a real-time session on any live collaboration site, including PBworks, Google Wave, EtherPad, etc. Make a lobby, share the URL, then when everybody is ready and available, you all get notified with a link to your collaboration space!"
+ -Where will you collaborate?
+ -How many participants?
+ -Start Lobby
+ 
+Lobby
+ -Share URL
+ -List of participants
+ -Ready/Unready/Go button
+ 
+:Misc elements
+ -Real-time lobby updates
+ -Ready mp3
+ -IM alert
+ -Integration with notify.io
