@@ -9,6 +9,7 @@ from google.appengine.ext.webapp import template
 from google.appengine.ext import db
 from google.appengine.api import urlfetch
 from google.appengine.api import mail
+from google.appengine.api import xmpp
 from google.appengine.ext.webapp.util import login_required
 from datetime import datetime
 import urllib, hashlib, time
@@ -40,6 +41,7 @@ class Participant(db.Model):
     user = db.UserProperty(auto_current_user_add=True)
     lobby = db.ReferenceProperty(Lobby, required=True)
     ready = db.BooleanProperty(default=False)
+    notify = db.BooleanProperty(default=True)
     created = db.DateTimeProperty(auto_now_add=True)
     updated = db.DateTimeProperty(auto_now=True)
 
@@ -91,10 +93,14 @@ class LobbyHandler(webapp.RequestHandler):
             user = users.get_current_user()
             participant = Participant.all().filter('lobby =', lobby).filter('user =', user).get()
             if participant:
-                ready = True if self.request.get('ready') else False
-                participant.ready = ready
+                participant.ready = True if self.request.get('ready') else False
+                if participant.ready:
+                    participant.notify = True if self.request.get('notify') else False
+                    xmpp.send_invite(participant.user.email())
                 participant.put()
                 broadcastRefresh(lobby)
+            if lobby.ready():
+                xmpp.send_message([p.user.email() for p in lobby.participant_set if p.notify], "Ready! %s" % lobby.url)
         self.redirect('/%s' % name)
 
 def main():

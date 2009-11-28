@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     <p>Share URL: <input type="text" value="http://{{ host }}/{{ lobby.name }}" /></p>
-    <div>Switch to: <form action="/{{ lobby.name }}" method="post" style="display: inline;">{% if participant.ready %}<input type="submit" name="notready" value="Not Ready" />{% else %}<input type="submit" name="ready" value="Ready" />{% endif %}</form></div>
+    <div>Switch to: <form action="/{{ lobby.name }}" method="post" style="display: inline;">{% if participant.ready %}<input type="submit" name="notready" value="Not Ready" />{% else %}<input type="submit" name="ready" value="Ready" /> <input type="checkbox" name="notify" value="true" {% if participant.notify %}checked="checked"{% endif %} /> Notify via IM{% endif %}</form></div>
     <p>Participants:
       <ul>
         {% for participant in lobby.participant_set %}
